@@ -3,12 +3,12 @@ const tarefa = document.getElementById('tarefa');
 const lista = document.querySelector('.lista-tarefas');
 const botaoSalvar = document.getElementById('inserirTarefa');
 const radio = document.querySelector('#task');
-const tarefaAdicionada = document.getElementById('frase');
 
 
 
 let tasks;
 let id;
+let status;
 
 const getTasks = () => JSON.parse(localStorage.getItem('dbtasks'))?? []; 
 const setTasks = () => localStorage.setItem('dbtasks',JSON.stringify(tasks));  
@@ -18,8 +18,8 @@ function loadTasks() {
     tasks = getTasks();
     lista.innerHTML = '';
     console.log(tasks);
-    tasks.forEach((item,index) => {
-        inserirTarefa(item,index);
+    tasks.forEach((item,index,status) => {
+        inserirTarefa(item,index,status);
     })
 }
 
@@ -37,15 +37,24 @@ function abrirModal(){
 }
 }
 
-function inserirTarefa(item,index){
+
+function inserirTarefa(item,index,status) {
     let tarefaAdd = document.createElement('div');
     tarefaAdd.classList.add('tarefas');
 
     tarefaAdd.innerHTML = `
-    <label onclick="riscar(${index})" id="frase"><input type="checkbox">${item.tarefa}</label>
+    <label><input type="checkbox" id="checkTarefa" ${status} onchange="check(${index})" class="checkBox">
+    <p class='checkLabel'>${item.tarefa}</p></label>
     <button onclick="deletar(${index})"><i class="bx bxs-trash xs"></i></button>
     `
-    lista.appendChild(tarefaAdd);   
+    lista.appendChild(tarefaAdd);  
+}
+
+
+
+function check(index){
+    tasks[index].status = tasks[index].status == '' ? 'checked' : '';
+    setTasks(); 
 }
 
 botaoSalvar.onclick = () => {  // no clique do botao pegue o evento e verifique:
@@ -54,7 +63,7 @@ botaoSalvar.onclick = () => {  // no clique do botao pegue o evento e verifique:
         return;        
     }     
     else
-        tasks.push({'tarefa':tarefa.value})   // se nao pega o valor do que foi digitado e empurra pro localStorage como JSON
+        tasks.push({'tarefa':tarefa.value, 'status':" "})   // se nao pega o valor do que foi digitado e empurra pro localStorage como JSON
     setTasks();
     modal.classList.remove('active');
 
@@ -68,6 +77,12 @@ function deletar(index){
     setTasks();
     loadTasks();
 }
+
+
+
+
+
+
 
 modal.addEventListener('keydown', e =>{    //pegar o evento da tecla Enter ao ser pressionado no Modal 
     if(e.key === 'Enter'){

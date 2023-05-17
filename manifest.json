@@ -1,0 +1,24 @@
+{
+    "name": "ToDo List Noé",
+    "short_name": "ToDoList Noé",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "check.png",
+        "type": "image/png", "sizes": "72x72"
+      },
+      {
+        "src": "check.png",
+        "type": "image/png", "sizes": "96x96"
+      },
+      {
+        "src": "check.png",
+        "type": "image/png", "sizes": "120x120"
+      }
+      
+    ]
+  }

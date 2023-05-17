@@ -2,7 +2,7 @@ const modal = document.querySelector('.modal');
 const tarefa = document.getElementById('tarefa');
 const lista = document.querySelector('.lista-tarefas');
 const botaoSalvar = document.getElementById('inserirTarefa');
-const radio = document.querySelector('#task');
+const radio = document.querySelector('#checkTarefa');
 
 
 
@@ -15,12 +15,21 @@ const setTasks = () => localStorage.setItem('dbtasks',JSON.stringify(tasks));
 
 
 function loadTasks() {
+        
+
     tasks = getTasks();
     lista.innerHTML = '';
     console.log(tasks);
     tasks.forEach((item,index,status) => {
-        inserirTarefa(item,index,status);
-    })
+        inserirTarefa(item,index,status)
+        if(tasks[index].status == 'checked'){
+            document.querySelector('.checkLabel').classList.add('checkBox:cheked');
+            
+            console.log(index)
+        }
+    }) 
+
+
 }
 
 loadTasks();
@@ -47,15 +56,17 @@ function inserirTarefa(item,index,status) {
     <p class='checkLabel'>${item.tarefa}</p></label>
     <button onclick="deletar(${index})"><i class="bx bxs-trash xs"></i></button>
     `
-    lista.appendChild(tarefaAdd);  
-}
+    lista.appendChild(tarefaAdd);      
 
-
-
-function check(index){
+}  
+    
+    function check(index){
     tasks[index].status = tasks[index].status == '' ? 'checked' : '';
     setTasks(); 
-}
+       
+    }
+
+
 
 botaoSalvar.onclick = () => {  // no clique do botao pegue o evento e verifique:
     {
@@ -63,7 +74,7 @@ botaoSalvar.onclick = () => {  // no clique do botao pegue o evento e verifique:
         return;        
     }     
     else
-        tasks.push({'tarefa':tarefa.value, 'status':" "})   // se nao pega o valor do que foi digitado e empurra pro localStorage como JSON
+        tasks.push({'tarefa':tarefa.value, 'status':''})   // se nao pega o valor do que foi digitado e empurra pro localStorage como JSON
     setTasks();
     modal.classList.remove('active');
 
@@ -78,12 +89,6 @@ function deletar(index){
     loadTasks();
 }
 
-
-
-
-
-
-
 modal.addEventListener('keydown', e =>{    //pegar o evento da tecla Enter ao ser pressionado no Modal 
     if(e.key === 'Enter'){
         botaoSalvar.onclick();
@@ -93,5 +98,11 @@ modal.addEventListener('keydown', e =>{    //pegar o evento da tecla Enter ao se
 
 
 
-
-
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("/serviceWorker.js")
+        .then(res => console.log("service worker registered",res))
+        .catch(err => console.log("service worker not registered", err))
+    })
+  }

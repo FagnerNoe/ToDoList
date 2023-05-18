@@ -21,14 +21,9 @@ function loadTasks() {
     lista.innerHTML = '';
     console.log(tasks);
     tasks.forEach((item,index,status) => {
-        inserirTarefa(item,index,status)
-        if(tasks[index].status == 'checked'){
-            document.querySelector('.checkLabel').classList.add('checkBox:cheked');
-            
-            console.log(index)
-        }
+        inserirTarefa(item,index,status=tasks[index].status)        
     }) 
-
+    
 
 }
 
